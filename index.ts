@@ -4,4 +4,6 @@ export function cli(args: string[]) {
   console.log(args);
 }
 
-await visit("https://www.hoodoo.digital");
+const port = 5173;
+
+await visit(`http://localhost:${port}`);
