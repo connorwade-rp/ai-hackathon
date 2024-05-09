@@ -44,7 +44,7 @@ async function handleFile(ext: string, filePath: string) {
 }
 
 async function outputDir(bundle: Bundle, ext: string) {
-  const outputDir = path.resolve(import.meta.dirname, "dist");
+  const outputDir = path.resolve(import.meta.dirname, "bundled");
   const map = bundle.generateMap({
     file: path.resolve(outputDir, `bundle${ext}.map`),
     includeContent: true,
@@ -53,7 +53,7 @@ async function outputDir(bundle: Bundle, ext: string) {
   await $write(path.resolve(outputDir, `bundle${ext}`), bundle.toString());
 }
 
-await bundleDir(path.resolve(import.meta.dirname, `../../testing-site/src`));
+await bundleDir(path.resolve(import.meta.dirname, `../../testing-site`));
 
 Object.values(fileMap).forEach(async (bundle) => {
   if (bundle.isEmpty()) return;
