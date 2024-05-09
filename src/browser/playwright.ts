@@ -1,5 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { chromium, type Browser, type BrowserContext } from "playwright";
+import { write as $write } from "bun";
+import path from "node:path";
 
 async function setup() {
   const browser = await chromium.launch();
@@ -14,7 +16,10 @@ export async function visit(url: string) {
 
   try {
     const results = await new AxeBuilder({ page }).analyze();
-    console.log(results);
+    await $write(
+      path.resolve(import.meta.dirname, "a11y.json"),
+      JSON.stringify(results.violations, null, 2)
+    );
   } catch (e) {
     console.error(e);
   }
