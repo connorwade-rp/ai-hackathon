@@ -48,9 +48,10 @@ async function outputDir(bundle: Bundle, ext: string) {
   const map = bundle.generateMap({
     file: path.resolve(outputDir, `bundle${ext}.map`),
     includeContent: true,
-    hires: true,
   });
+
   await $write(path.resolve(outputDir, `bundle${ext}`), bundle.toString());
+  await $write(path.resolve(outputDir, `bundle${ext}.map`), map.toString());
 }
 
 await bundleDir(path.resolve(import.meta.dirname, `../../testing-site`));
