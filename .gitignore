@@ -175,3 +175,4 @@ dist
 .DS_Store
 
 /src/codebase/bundled
+a11y.json
