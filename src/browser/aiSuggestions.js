@@ -1,6 +1,3 @@
-require('dotenv').config();
-const fetch = require('node-fetch');
-
 // Make sure to set your variables in the .env file
 const endpoint = `${process.env.OPENAI_ENDPOINT}openai/deployments/${process.env.DEPLOYMENT_NAME}/chat/completions?api-version=2023-10-01-preview`;
 
