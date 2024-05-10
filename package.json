@@ -11,9 +11,10 @@
   "dependencies": {
     "@axe-core/playwright": "^4.9.0",
     "@azure/openai": "^1.0.0-beta.12",
-    "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "openai": "^4.44.0",
+    "bun": "",
+    "magic-string": "^0.30.10",
     "playwright": "^1.44.0"
   },
   "scripts": {

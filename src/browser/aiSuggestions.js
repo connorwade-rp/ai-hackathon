@@ -17,6 +17,7 @@ async function getFixSuggestions(issue) {
             body: JSON.stringify({
                 messages: [
                     { "role": "system", "content": "You are a helpful assistant specialized in web accessibility following WCAG 2.2 guidelines. Provide a solution based on the axe accessibility scan issue and the existing code. Make the solution a code suggestion." },
+                    // TODO: Pass in the actual code context here, along with the issue description
                     { "role": "user", "content": issue.description }
                 ]
             })
