@@ -56,17 +56,7 @@ async function outputDir(bundle: Bundle, ext: string) {
 
 await bundleDir(path.resolve(import.meta.dirname, `../../testing-site`));
 
-Object.values(fileMap).forEach(async (bundle) => {
+Object.entries(fileMap).forEach(async ([ext, bundle]) => {
   if (bundle.isEmpty()) return;
-  if (bundle === fileMap.html) {
-    await outputDir(bundle, ".html");
-  } else if (bundle === fileMap.js) {
-    await outputDir(bundle, ".js");
-  } else if (bundle === fileMap.jsx) {
-    await outputDir(bundle, ".jsx");
-  } else if (bundle === fileMap.ts) {
-    await outputDir(bundle, ".ts");
-  } else if (bundle === fileMap.tsx) {
-    await outputDir(bundle, ".tsx");
-  }
+  await outputDir(bundle, `.${ext}`);
 });
