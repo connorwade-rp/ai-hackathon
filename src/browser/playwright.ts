@@ -1,6 +1,10 @@
 import AxeBuilder from "@axe-core/playwright";
 import { chromium, type Browser, type BrowserContext } from "playwright";
-import { getFixSuggestions } from "./aiSuggestions";
+import {
+  attachCodeContext,
+  attachIssue,
+  getFixSuggestions,
+} from "../ai/aiSuggestions";
 import { write as $write } from "bun";
 import path from "node:path";
 
@@ -15,15 +19,18 @@ export async function visit(url: string) {
   const page = await context.newPage();
   await page.goto(url);
 
+  await attachCodeContext();
+
   try {
     const results = await new AxeBuilder({ page }).analyze();
 
     if (results.violations.length > 0) {
       for (const issue of results.violations) {
-        const suggestion = await getFixSuggestions(issue);
-        console.log(`Suggestion for issue '${issue.id}':`, suggestion);
+        await attachIssue(JSON.stringify(issue));
       }
     }
+
+    await getFixSuggestions();
 
     await $write(
       path.resolve(import.meta.dirname, "a11y.json"),
