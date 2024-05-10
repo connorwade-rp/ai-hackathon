@@ -176,3 +176,4 @@ dist
 
 /src/codebase/bundled
 a11y.json
+/src/ai/debug.json

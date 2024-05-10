@@ -11,7 +11,9 @@ const fileMap = {
   tsx: new Bundle(),
 };
 
-async function bundleDir(dir: string) {
+const bundle = new Bundle();
+
+export async function bundleDir(dir: string) {
   const files = await readdir(dir);
   for (const file of files) {
     const filePath = path.resolve(dir, file);
@@ -30,6 +32,15 @@ async function bundleDir(dir: string) {
       await handleFile(ext.slice(1), filePath);
     }
   }
+  const outputDir = path.resolve(import.meta.dirname, "bundled");
+  const map = bundle.generateMap({
+    file: path.resolve(outputDir, `bundle.txt.map`),
+    includeContent: true,
+  });
+  await $write(path.resolve(outputDir, `bundle.txt`), bundle.toString());
+  await $write(path.resolve(outputDir, `bundle.txt.map`), map.toString());
+
+  return bundle.toString();
 }
 
 async function handleFile(ext: string, filePath: string) {
@@ -40,7 +51,7 @@ async function handleFile(ext: string, filePath: string) {
   content.append("\n//-----------END OF FILE-----------\n");
 
   //@ts-ignore stupid typescript
-  fileMap[ext].addSource({ content, filename: filePath });
+  bundle.addSource({ content, filename: filePath });
 }
 
 async function outputDir(bundle: Bundle, ext: string) {
@@ -53,10 +64,3 @@ async function outputDir(bundle: Bundle, ext: string) {
   await $write(path.resolve(outputDir, `bundle${ext}`), bundle.toString());
   await $write(path.resolve(outputDir, `bundle${ext}.map`), map.toString());
 }
-
-await bundleDir(path.resolve(import.meta.dirname, `../../testing-site`));
-
-Object.entries(fileMap).forEach(async ([ext, bundle]) => {
-  if (bundle.isEmpty()) return;
-  await outputDir(bundle, `.${ext}`);
-});
