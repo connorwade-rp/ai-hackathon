@@ -22,14 +22,19 @@ export async function visit(url: string) {
   await attachCodeContext();
 
   try {
+    console.log("Analyzing page...");
     const results = await new AxeBuilder({ page }).analyze();
 
     if (results.violations.length > 0) {
       for (const issue of results.violations) {
         await attachIssue(JSON.stringify(issue));
       }
+    } else {
+      console.log("No issues found!");
+      return;
     }
 
+    console.log("Getting fix suggestions...");
     await getFixSuggestions();
 
     await $write(

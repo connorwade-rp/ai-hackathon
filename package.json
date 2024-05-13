@@ -2,6 +2,9 @@
   "name": "ai-hackathon",
   "module": "index.ts",
   "type": "module",
+  "bin": {
+    "aicheck": "bin/aicheck"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -14,7 +17,8 @@
     "openai": "^4.44.0",
     "bun": "",
     "magic-string": "^0.30.10",
-    "playwright": "^1.44.0"
+    "playwright": "^1.44.0",
+    "ai-hackathon": "link:ai-hackathon"
   },
   "scripts": {
     "prepare": "bunx playwright install chromium"

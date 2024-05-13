@@ -1,0 +1,5 @@
+#!/usr/bin/env bun
+
+import { cli } from "../index.ts";
+
+await cli(process.argv.slice(2));
