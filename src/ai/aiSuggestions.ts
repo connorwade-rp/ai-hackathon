@@ -6,9 +6,7 @@ import prompt from "./initial_prompt.txt";
 const DEBUG_FILE = path.resolve(import.meta.dirname, "debug.json");
 
 // Make sure to set your variables in the .env file
-const endpoint = `${process.env.OPENAI_ENDPOINT}openai/deployments/${process.env.DEPLOYMENT_NAME}/chat/completions?api-version=2023-10-01-preview`;
-
-console.log("ENDPOINT:", endpoint);
+const endpoint = `${process.env.OPENAI_ENDPOINT}openai/deployments/${process.env.DEPLOYMENT_NAME}/chat/completions?api-version=2024-02-01`;
 
 interface MessageContext {
   messages: {
@@ -26,10 +24,8 @@ const messageCtx: MessageContext = {
   ],
 };
 
-export async function attachCodeContext() {
-  const code = await bundleDir(
-    path.resolve(import.meta.dirname, `../../testing-site`)
-  );
+export async function attachCodeContext(dir: string) {
+  const code = await bundleDir(dir);
   messageCtx.messages.push({
     role: "user",
     content: `CODE: ${code}`,

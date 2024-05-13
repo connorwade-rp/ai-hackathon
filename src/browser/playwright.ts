@@ -7,6 +7,7 @@ import {
 } from "../ai/aiSuggestions";
 import { write as $write } from "bun";
 import path from "node:path";
+import type { Config } from "../..";
 
 async function setup() {
   const browser = await chromium.launch();
@@ -14,22 +15,27 @@ async function setup() {
   return { browser, context };
 }
 
-export async function visit(url: string) {
+export async function visit(settings: Config) {
   const { browser, context } = await setup();
   const page = await context.newPage();
-  await page.goto(url);
+  await page.goto(settings.url);
 
-  await attachCodeContext();
+  await attachCodeContext(settings.src);
 
   try {
+    console.log("Analyzing page...");
     const results = await new AxeBuilder({ page }).analyze();
 
     if (results.violations.length > 0) {
       for (const issue of results.violations) {
         await attachIssue(JSON.stringify(issue));
       }
+    } else {
+      console.log("No issues found!");
+      return;
     }
 
+    console.log("Getting fix suggestions...");
     await getFixSuggestions();
 
     await $write(
