@@ -1,6 +1,37 @@
 # ai-hackathon
 
-## Bun program
+## Cli
+
+To use the CLI, use:
+
+```bash
+bun link
+```
+
+You will need a .env file with your openAI info:
+
+```
+OPENAI_API_TYPE=<type>
+OPENAI_API_VERSION=<version>
+DEPLOYMENT_NAME=<deploymentName>
+OPENAI_API_KEY=<your openai key>
+OPENAI_ENDPOINT=<then endpoint for you openai instance>
+```
+
+### Commands
+
+Run for a website:
+
+```bash
+aicheck -u=https://www.example.com -s=testing-site
+aicheck --url=https://www.example.com -src=testing-site
+```
+
+`-u/--url=<your domain>` tests the website at your domain.
+`-s/--src=<your codebase>` the source code for you website. This path should be relative to your current directory. For instance,
+if code is the directory above you use `../`. If it is in the same directory use `./`.
+
+## Development
 
 To install dependencies **DO NOT FORGET TO TURN-OFF Z-SCALER**:
 

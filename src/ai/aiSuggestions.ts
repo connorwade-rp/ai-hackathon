@@ -24,10 +24,8 @@ const messageCtx: MessageContext = {
   ],
 };
 
-export async function attachCodeContext() {
-  const code = await bundleDir(
-    path.resolve(import.meta.dirname, `../../testing-site`)
-  );
+export async function attachCodeContext(dir: string) {
+  const code = await bundleDir(dir);
   messageCtx.messages.push({
     role: "user",
     content: `CODE: ${code}`,
