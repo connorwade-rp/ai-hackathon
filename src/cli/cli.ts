@@ -40,7 +40,7 @@ export async function cli(args: string[]) {
     process.exit(1);
   }
   const src = args[srcIndex].split("=")[1];
-  settings.src = path.resolve(import.meta.dirname, src);
+  settings.src = path.resolve(import.meta.dirname, "../../", src);
 
   console.log("Testing URL:", settings.url);
   await visit(settings);
