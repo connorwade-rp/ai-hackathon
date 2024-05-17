@@ -8,7 +8,7 @@ const DEBUG_FILE = path.resolve(import.meta.dirname, "debug.json");
 // Make sure to set your variables in the .env file
 const endpoint = `${process.env.OPENAI_ENDPOINT}openai/deployments/${process.env.DEPLOYMENT_NAME}/chat/completions?api-version=2024-02-01`;
 
-interface MessageContext {
+export interface MessageContext {
   messages: {
     role: "user" | "system";
     content: string;
