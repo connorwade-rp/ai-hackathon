@@ -6,7 +6,8 @@
     "aicheck": "bin/aicheck"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.21.2"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -14,13 +15,19 @@
   "dependencies": {
     "@axe-core/playwright": "^4.9.0",
     "@azure/openai": "^1.0.0-beta.12",
-    "openai": "^4.44.0",
+    "ai-hackathon": "link:ai-hackathon",
     "bun": "",
+    "drizzle-orm": "^0.30.10",
+    "hono": "^4.3.7",
     "magic-string": "^0.30.10",
-    "playwright": "^1.44.0",
-    "ai-hackathon": "link:ai-hackathon"
+    "openai": "^4.44.0",
+    "playwright": "^1.44.0"
   },
   "scripts": {
+    "dev": "db:gen && bun run index.ts",
+    "db:migrate": "bun src/database/migrate.ts",
+    "db:gen": "bunx drizzle-kit generate:sqlite --schema ./schema.ts",
+    "db:prepare": "db:gen && db:migrate",
     "prepare": "bunx playwright install chromium"
   }
 }

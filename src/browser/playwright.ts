@@ -7,7 +7,7 @@ import {
 } from "../ai/aiSuggestions";
 import { write as $write } from "bun";
 import path from "node:path";
-import type { Config } from "../..";
+import type { Config } from "../cli/cli";
 
 async function setup() {
   const browser = await chromium.launch();

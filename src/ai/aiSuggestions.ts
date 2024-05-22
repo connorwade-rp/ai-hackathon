@@ -2,13 +2,14 @@ import { bundleDir } from "../codebase/bundler";
 import path from "node:path";
 import { write as $write } from "bun";
 import prompt from "./initial_prompt.txt";
+import { writeSuggestionsToFile } from "../codebase/writer";
 
 const DEBUG_FILE = path.resolve(import.meta.dirname, "debug.json");
 
 // Make sure to set your variables in the .env file
 const endpoint = `${process.env.OPENAI_ENDPOINT}openai/deployments/${process.env.DEPLOYMENT_NAME}/chat/completions?api-version=2024-02-01`;
 
-interface MessageContext {
+export interface MessageContext {
   messages: {
     role: "user" | "system";
     content: string;
@@ -60,13 +61,15 @@ export async function getFixSuggestions() {
 
     const choices = data.choices;
     if (choices && choices.length > 0) {
-      console.log(choices[0].message.content.trim());
+      const message = choices[0].message.content.trim();
+      console.log(message);
       messageCtx.messages.push({
         role: "system",
-        content: choices[0].message.content.trim(),
+        content: message,
       });
       $write(DEBUG_FILE, JSON.stringify(messageCtx, null, 2));
-      return choices[0].message.content.trim();
+      await handleSuggestions(message);
+      return message;
     } else {
       throw new Error("No completion choices returned.");
     }
@@ -74,4 +77,10 @@ export async function getFixSuggestions() {
     console.error("Error calling OpenAI:", error);
     return null;
   }
+}
+
+async function handleSuggestions(message: string) {
+  message = message.replace("```json", "").replace("```", "");
+  const suggestions = JSON.parse(message);
+  await writeSuggestionsToFile(suggestions);
 }
